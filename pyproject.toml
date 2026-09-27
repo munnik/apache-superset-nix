@@ -24,6 +24,12 @@ dependencies = [
   # it under the development extra - so `superset --help` cannot even build its
   # command tree without it. Not our choice to make; upstream's omission.
   "rich",
+  # Superset's own requirements never enable OAuth, so Flask-AppBuilder's
+  # `oauth` extra - and therefore Authlib - is absent from them. Without it
+  # AUTH_TYPE = AUTH_OAUTH dies at import with "No module named 'authlib'"
+  # before the app is even built. The extra rather than a direct authlib pin,
+  # so FAB's own bound (>=0.14,<2.0.0) is what applies.
+  "flask-appbuilder[oauth]",
   # The async worker pool gunicorn runs. Superset's own docs use gevent for the
   # webserver; without it a long chart query blocks a whole worker.
   "gevent>=23.9.1",
